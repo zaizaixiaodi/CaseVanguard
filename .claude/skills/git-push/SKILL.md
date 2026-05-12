@@ -1,3 +1,9 @@
+---
+name: git-push
+description: 推送代码到 GitHub 远程仓库。当律师说"推送""提交""上传到 GitHub"或里程碑开发完成后使用。包含前置检查、.gitignore 验证、暂存提交、打标签、推送和认证排障全流程。
+allowed-tools: Bash(git *) Bash(gh *)
+---
+
 # Skill：Git 推送
 
 ## 基本信息

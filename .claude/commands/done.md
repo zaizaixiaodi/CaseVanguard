@@ -31,7 +31,7 @@ git diff --stat
 
 ## 步骤 3：Git 提交与推送
 
-调用 `.claude/skills/git-push.md` 中定义的流程：
+调用 `.claude/skills/git-push/SKILL.md` 中定义的流程：
 
 1. 确认 `.gitignore` 规则正确
 2. `git add -A`

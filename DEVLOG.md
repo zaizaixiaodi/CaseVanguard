@@ -26,3 +26,16 @@
 - M3 预处理：大表压缩（csv-summarize.py）推迟到 v2，v1 只做基础转换
 - 新增 git-push skill（`.claude/skills/git-push.md`），仓库：https://github.com/zaizaixiaodi/CaseVanguard.git
 - 新增 `.gitignore`，排除 workspace 下所有案件数据
+
+### v0.1.1 — 修正 git-push skill 注册 + PRD 规范对齐 (2026-05-12)
+
+**变更内容：**
+- `.claude/skills/git-push.md`（扁平文件）→ `.claude/skills/git-push/SKILL.md`（目录式结构），补充 YAML frontmatter（name、description、allowed-tools）
+- PRD 3.1 目录结构：skills 条目从错误的扁平文件格式修正为 Claude Code 官方规范 `<name>/SKILL.md`
+- PRD 3.1：新增 `git-push` skill 和 `done`/`git-push` command 目录条目，新增 Claude Code 目录规范说明块
+- PRD 九、命令速查表：补充缺失的 `/done` 和 `/git-push` 命令
+- `.claude/commands/done.md`：引用路径从 `.claude/skills/git-push.md` 更新为 `.claude/skills/git-push/SKILL.md`
+
+**决策与反馈：**
+- 用户反馈"无法唤起 git-push skill"，经查 Claude Code 官方文档确认根因：skills 必须使用目录式结构（`<name>/SKILL.md`），扁平文件不会被系统识别。commands 则使用扁平 `.md` 文件
+- 用户要求"PRD 中与 Claude Code 官方不一致的地方也要改"，已逐项审查并修正
