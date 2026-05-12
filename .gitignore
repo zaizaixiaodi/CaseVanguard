@@ -9,6 +9,16 @@ workspace_archive/
 
 # 敏感配置
 .env
+*.token
+api.txt
+.claude/scripts/api.txt
+
+# 中间产物
+__pycache__/
+.claude/scripts/converted/
+
+# 参考材料（含Token等敏感信息）
+项目需求和一些输入/
 
 # 系统文件
 .DS_Store

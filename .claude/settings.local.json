@@ -4,7 +4,13 @@
       "Bash(*)",
       "Read",
       "Glob",
-      "Grep"
+      "Grep",
+      "PowerShell(Get-ChildItem \"D:\\\\AI Agent\\\\卷宗先锋 Agent\\\\workspace\\\\raw\" | Select-Object Name, @{N='SizeKB';E={[math]::Round\\($_.Length/1KB,1\\)}} | Format-Table -AutoSize)",
+      "PowerShell(& \"C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\Python\\\\bin\\\\python.exe\" -c \"import PyPDF2; print\\('PyPDF2:', PyPDF2.__version__\\)\" 2>&1; & \"C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\Python\\\\bin\\\\python.exe\" -c \"import pdfplumber; print\\('pdfplumber:', pdfplumber.__version__\\)\" 2>&1; & \"C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\Python\\\\bin\\\\python.exe\" -c \"import fitz; print\\('PyMuPDF:', fitz.version\\)\" 2>&1)",
+      "PowerShell(curl.exe --version 2>&1 | Select-Object -First 1)",
+      "PowerShell(& \"C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\Python\\\\bin\\\\python.exe\" -c \"import requests; print\\('requests:', requests.__version__\\)\")",
+      "Bash(cp \"D:\\\\AI Agent\\\\卷宗先锋 Agent\\\\项目需求和一些输入\\\\pdf2md\\\\mineru_converter.py\" \"D:\\\\AI Agent\\\\卷宗先锋 Agent\\\\.claude\\\\scripts\\\\mineru_converter.py\")",
+      "Bash(cp \"D:\\\\AI Agent\\\\卷宗先锋 Agent\\\\项目需求和一些输入\\\\pdf2md\\\\api.txt\" \"D:\\\\AI Agent\\\\卷宗先锋 Agent\\\\.claude\\\\scripts\\\\api.txt\")"
     ]
   }
 }

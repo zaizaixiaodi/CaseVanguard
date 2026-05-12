@@ -76,3 +76,54 @@
 
 **session_id：** session_20260512_151730
 
+### M3：预处理能力 + /preprocess ✅
+
+**交付物：**
+- `.claude/skills/preprocess/SKILL.md` — 预处理技能（文件识别、分类、重命名、分组算法）
+- `.claude/commands/preprocess.md` — 预处理命令（7步标准流程）
+- `.claude/scripts/mineru_converter.py` — 从 pdf2md 移植的 MinerU 标准 API 转换器
+- `.claude/scripts/api.txt` — MinerU API Token（已加入 .gitignore）
+
+**技术决策：**
+- PDF → MD 转换方案从"Read 工具 + mineru-ocr skill"改为"mineru_converter.py（Python + MinerU 标准 API）"。原因：
+  - pdftoppm 未安装在 Windows 环境，Read 工具无法读取 PDF
+  - mineru-ocr skill 的 convert.js 使用 JXA（macOS-only），Windows 不可用
+  - 用户提供了 pdf2md 工具（`项目需求和一些输入/pdf2md/`），基于 Python + requests + MinerU API，跨平台可用
+- mineru_converter.py 放在 `.claude/scripts/`，Token 从同目录 `api.txt` 读取，不提交到 Git
+
+### M3 Walkthrough 验收：✅ 全部通过 (2026-05-12)
+
+| 测试项 | 结果 | 备注 |
+|--------|------|------|
+| T3.1 文件扫描 | ✅ | 19 份 PDF 文件全部记录，编号 E001-E019（跳过 E008，原始排序中 08 空缺） |
+| T3.2 格式转换 | ✅ | 19/19 全部转换成功，MinerU 标准 API（OCR+表格识别），总计 161.5KB MD |
+| T3.3 processed/ 目录 | ✅ | 19 份 E{NNN}.md 文件，均含元信息注释头（来源/格式/转换日期） |
+| T3.4 重命名 | ✅ | file-manifest.json 中 `renamed` 字段符合 `{序号}_{类型}_{日期}_{简述}` 规范 |
+| T3.5 分组建议 | ✅ | 5 组，硬证据优先，含分组理由，覆盖律师关注点"多主体债务关联" |
+| T3.6 律师确认分组 | ✅ | 律师确认"没问题"，reading-plan.json 更新 lawyer_confirmed = true |
+
+**转换质量抽查：**
+- E001（建设工程施工合同）：11KB，主体/价款/工期/计价条款完整，少量 OCR 错字
+- E007（付款协议书）：7KB，欠款金额 62,000,019.54 元、多主体清单、付款节点清晰
+
+**环境依赖记录：**
+- pdftoppm：未安装（Windows 缺少 poppler-utils），Read 工具 PDF 读取不可用
+- mineru-ocr JXA 脚本：macOS 专有，Windows 不可用
+- Python requests 库：已安装（v2.32.5），mineru_converter.py 正常工作
+- MinerU Token：有效，api.txt 已加入 .gitignore 防止泄漏
+
+**session_id：** session_20260512_151730
+
+### v0.1.3 — M3预处理能力 + MinerU转换器移植 + Walkthrough验收通过 (2026-05-12)
+
+**变更内容：**
+- 新增 `.claude/skills/preprocess/SKILL.md` — 预处理技能（格式识别、证据分类、重命名规范、分组算法）
+- 新增 `.claude/commands/preprocess.md` — `/preprocess` 命令（7步标准流程：扫描→转换→重命名→分组→确认→写入→输出）
+- 移植 `.claude/scripts/mineru_converter.py` — 从用户 pdf2md 工具移植，Python + MinerU 标准 API，跨平台 PDF→MD
+- 更新 `.gitignore` — 排除 api.txt、__pycache__/、converted/、项目需求和一些输入/
+- 更新 `DEVLOG.md` — M3 开发记录与 Walkthrough 验收（T3.1-T3.6 全部通过）
+
+**决策与反馈：**
+- 原方案（Read 工具 / mineru-ocr JXA）在 Windows 不可用，用户提供 pdf2md 参考工具后直接移植，大幅简化预处理管道
+- 19 份真实案件证据 PDF 全部转换成功（161.5KB MD），分为 5 组，律师确认通过
+
