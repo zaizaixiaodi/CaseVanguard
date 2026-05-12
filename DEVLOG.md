@@ -39,3 +39,40 @@
 **决策与反馈：**
 - 用户反馈"无法唤起 git-push skill"，经查 Claude Code 官方文档确认根因：skills 必须使用目录式结构（`<name>/SKILL.md`），扁平文件不会被系统识别。commands 则使用扁平 `.md` 文件
 - 用户要求"PRD 中与 Claude Code 官方不一致的地方也要改"，已逐项审查并修正
+
+### M1 Walkthrough 验收：✅ 全部通过 (2026-05-12)
+
+| 测试项 | 结果 | 备注 |
+|--------|------|------|
+| T1.1 claude.md 自动加载 | ✅ | Agent 自我介绍为"卷宗先锋"，红线生效 |
+| T1.2 目录结构完整 | ✅ | 与 PRD 3.1 一致，skills 为目录式结构 |
+| T1.3 JSON 模板 Schema | ✅ | 5 个文件字段齐全 |
+| T1.4 state-manager.py | ✅ | init/read/write 正常。附注：Windows 下 `python` 命令指向 WindowsApps 重定向器（exit 49），需用绝对路径 `C:\Users\Administrator\AppData\Local\Python\bin\python.exe` |
+| T1.5 claude.md 内容覆盖 | ✅ | 6 个章节全覆盖 |
+| T1.6 git-push skill 注册 | ✅ | skill 列表中可见 |
+
+**环境备注：**
+- settings.local.json 已改为 `Bash(*)` 通配符，减少权限弹窗
+- 测试数据已放入 `workspace/raw/`：20 份 PDF（建设工程施工合同纠纷相关）
+
+### M2 Walkthrough 验收：✅ 全部通过 (2026-05-12)
+
+**测试案件：** 苏茂公司 诉 武汉成丰学校等 建设工程施工合同纠纷
+
+| 测试项 | 结果 | 备注 |
+|--------|------|------|
+| T2.1 引导表展示 | ✅ | 7 个字段，不强制填满 |
+| T2.2 输入解析 | ✅ | 正确提取案由、当事人、案情 |
+| T2.3 假设与关注点补充 | ✅ | 4 条假设、5 条关注点 |
+| T2.4 法律要件拆解 | ✅ | 11 项要件，含 3 项重点标注（优先受偿权、多主体效力、加速到期） |
+| T2.5 case-state.json | ✅ | 18 字段，phase = phase_0_init |
+| T2.6 case-context.json | ✅ | 9 字段，与律师输入一致 |
+| T2.7 file-manifest.json | ✅ | `{"files": []}` |
+| T2.8 reading-plan.json | ✅ | groups 为空 |
+| T2.9 review-log.json | ✅ | `{"reviews": []}` |
+| T2.10 workspace 子目录 | ✅ | 5 个子目录全部存在 |
+| T2.11 确认输出 | ✅ | 含 session_id、要件拆解、下一步提示 |
+| T2.12 二次执行冲突检测 | ✅ | 检测到已有未完成案件并提示 |
+
+**session_id：** session_20260512_151730
+
