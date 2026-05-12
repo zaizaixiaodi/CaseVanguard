@@ -255,9 +255,11 @@ def convert_file(file_path: str) -> str:
     return md_content
 
 
-def convert_and_save(file_path: str) -> dict:
+def convert_and_save(file_path: str, output_dir: str = None, output_name: str = None) -> dict:
     """
-    转换单个文件并保存到 converted/ 目录。
+    转换单个文件并保存。
+    - output_dir: 输出目录，默认为 scripts/converted/
+    - output_name: 输出文件名（含 .md），默认为 {原文件名stem}.md
     返回 {"success": bool, "file": str, "output": str, "error": str|None}
     """
     src = Path(file_path)
@@ -268,9 +270,10 @@ def convert_and_save(file_path: str) -> dict:
     if ext not in SUPPORTED_EXTENSIONS:
         return {"success": False, "file": str(src), "output": "", "error": f"不支持的格式: {ext}"}
 
-    out_dir = Path(__file__).parent / "converted"
-    out_dir.mkdir(exist_ok=True)
-    out_file = out_dir / f"{src.stem}.md"
+    out_dir = Path(output_dir) if output_dir else Path(__file__).parent / "converted"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_name = output_name if output_name else f"{src.stem}.md"
+    out_file = out_dir / out_name
 
     if out_file.exists():
         return {"success": True, "file": str(src), "output": str(out_file), "error": None, "skipped": True}
@@ -283,11 +286,13 @@ def convert_and_save(file_path: str) -> dict:
         return {"success": False, "file": str(src), "output": str(out_file), "error": str(e)}
 
 
-def convert_folder(folder_path: str) -> list:
+def convert_folder(folder_path: str, output_dir: str = None, name_map: dict = None) -> list:
     """
     批量转换文件夹下所有支持格式的文件。
+    - output_dir: 输出目录，默认为 scripts/converted/
+    - name_map: {原始文件名: 输出文件名} 映射，未匹配的用默认命名
     返回结果列表:
-    [{"file": "xxx.pdf", "success": true, "output": "converted/xxx.md", "error": null}, ...]
+    [{"file": "xxx.pdf", "success": true, "output": "xxx.md", "error": null}, ...]
     """
     folder = Path(folder_path)
     if not folder.is_dir():
@@ -296,7 +301,12 @@ def convert_folder(folder_path: str) -> list:
     results = []
     for ext in SUPPORTED_EXTENSIONS:
         for src in sorted(folder.rglob(f"*{ext}")):
-            results.append(convert_and_save(str(src)))
+            kwargs = {}
+            if output_dir:
+                kwargs["output_dir"] = output_dir
+            if name_map and src.name in name_map:
+                kwargs["output_name"] = name_map[src.name]
+            results.append(convert_and_save(str(src), **kwargs))
 
     return results
 

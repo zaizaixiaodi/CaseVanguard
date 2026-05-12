@@ -20,7 +20,7 @@ allowed-tools: Bash(ls *) Bash(wc *) Bash(python *) Glob Grep Write Edit
 
 **转换工具说明：**
 - `mineru_converter.py` 位于 `.claude/scripts/`，Token 从同目录 `api.txt` 读取
-- 已有 `converted/` 下同名 `.md` 文件会自动跳过，不重复转换
+- 已有同名 `.md` 文件会自动跳过，不重复转换
 - 超出 MinerU 支持范围的格式（xls/xlsx/csv），Agent 用 Read 工具处理
 
 ## 2. 证据类型分类
@@ -104,15 +104,15 @@ allowed-tools: Bash(ls *) Bash(wc *) Bash(python *) Glob Grep Write Edit
 
 ### 5.1 PDF/图片/Office → Markdown
 
-使用 `mineru_converter.py` 批量转换：
+使用 `mineru_converter.py` 批量转换，直接输出到 `workspace/processed/`：
 
 ```bash
-python .claude/scripts/mineru_converter.py <raw_dir>/
+python .claude/scripts/mineru_converter.py <raw_dir>/ --output-dir workspace/processed/ --name-map <映射>
 ```
 
-转换后的 `.md` 文件保存在 `.claude/scripts/converted/` 下。
+输出文件命名规则：`{证据编号}_{简述}.md`，例如 `E001_建设工程施工合同.md`。
 
-Agent 随后将每个 `.md` 复制到 `workspace/processed/E{NNN}.md`，并在文件首部添加元信息注释：
+转换完成后，在文件首部添加元信息注释：
 
 ```
 > 来源：{原始文件名}
@@ -144,7 +144,7 @@ MinerU API 不支持 Excel/CSV，Agent 用 Read 工具直接读取：
   "evidence_id": "E001",
   "original_filename": "原始文件名.pdf",
   "renamed": "01_合同类_YYYYMMDD_简述.pdf",
-  "processed_path": "processed/E001.md",
+  "processed_path": "processed/E001_简述.md",
   "file_size_kb": 2048,
   "format": "pdf",
   "category": "hard",

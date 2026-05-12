@@ -34,32 +34,37 @@
 
 ## 步骤二：批量格式转换
 
-使用 `mineru_converter.py` 批量调用 MinerU 标准 API 转换所有文件：
+使用 `mineru_converter.py` 批量调用 MinerU 标准 API，直接输出到 `workspace/processed/`：
 
 ```bash
-python .claude/scripts/mineru_converter.py workspace/raw/
+python .claude/scripts/mineru_converter.py workspace/raw/ --output-dir workspace/processed/ --name-map <映射>
 ```
 
 **转换引擎：** MinerU 标准 API（OCR + 表格识别），支持 PDF/Word/图片。
 **Token：** 从 `.claude/scripts/api.txt` 读取（已配置）。
 **已转换跳过：** 同名 `.md` 已存在则自动跳过。
 
+### 输出命名规则
+
+`{证据编号}_{简述}.md`，例如 `E001_建设工程施工合同.md`。
+
+简述从文件名/内容中提取，3-8 字概括核心内容（与步骤三重命名规范中的简述一致）。
+
 转换完成后：
-1. 将 `.claude/scripts/converted/` 下的 `.md` 文件复制到 `workspace/processed/E{NNN}.md`
-2. 在每份 processed MD 首部添加元信息注释：
+1. 在每份 processed MD 首部添加元信息注释：
    ```
    > 来源：{原始文件名}
    > 类型：{证据类型}
    > 转换日期：{YYYY-MM-DD}
    > 页数：{估计页数}
    ```
-3. 对每个文件判断证据类型、提取日期和简述（参照 preprocess skill 第 2、3 节）
-4. 质量自检：MD < 100 bytes → `preprocess_status: "failed"`；内容异常 → 标注 notes
+2. 对每个文件判断证据类型、提取日期和简述（参照 preprocess skill 第 2、3 节）
+3. 质量自检：MD < 100 bytes → `preprocess_status: "failed"`；内容异常 → 标注 notes
 
 ### 进度汇报
 
 ```
-✅ E001 已转换 → processed/E001.md (合同类，2457字)
+✅ E001 已转换 → processed/E001_建设工程施工合同.md (合同类，2457字)
 ⚠️ E003 转换异常：转换后内容过少，已标注待确认
 ```
 
@@ -153,7 +158,7 @@ evidence_unread = N  # 全部标记为未读
       "evidence_id": "E001",
       "original_filename": "...",
       "renamed": "01_合同类_YYYYMMDD_简述.pdf",
-      "processed_path": "processed/E001.md",
+      "processed_path": "processed/E001_简述.md",
       "file_size_kb": ...,
       "format": "pdf",
       "category": "hard",

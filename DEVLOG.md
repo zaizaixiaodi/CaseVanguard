@@ -127,3 +127,19 @@
 - 原方案（Read 工具 / mineru-ocr JXA）在 Windows 不可用，用户提供 pdf2md 参考工具后直接移植，大幅简化预处理管道
 - 19 份真实案件证据 PDF 全部转换成功（161.5KB MD），分为 5 组，律师确认通过
 
+### v0.1.4 — 预处理管道优化：消除中转目录 + 语义化文件命名 (2026-05-12)
+
+**变更内容：**
+- `mineru_converter.py`：`convert_and_save()` 新增 `output_dir` 和 `output_name` 参数，`convert_folder()` 新增 `name_map` 映射，不再硬编码输出到 `scripts/converted/`
+- `preprocess.md`：步骤二改为直接输出到 `workspace/processed/E{NNN}_简述.md`，去掉 `scripts/converted/` 中转流程
+- `preprocess/SKILL.md`：第 5 节同步更新输出路径和命名规则
+- `processed/` 下 19 份文件从 `E001.md` 重命名为 `E001_建设工程施工合同.md` 等语义化名称
+- `file-manifest.json` 的 `processed_path` 全部同步更新
+- 删除 `.claude/scripts/converted/`（19 份冗余副本）
+- 删除 `workspace/processed/_mapping.json`（不再需要映射桥接）
+
+**决策与反馈：**
+- 用户指出预处理阶段产生两处冗余：`scripts/converted/` 存放案件数据污染代码目录，`processed/E001.md` 纯序号命名缺乏辨识度
+- 用户接受序号但要求加原始名简述，最终确定 `{E编号}_{简述关键词}.md` 命名规则
+- 映射关系直接记在 `file-manifest.json` 中，`_mapping.json` 成为冗余层，一并清理
+
