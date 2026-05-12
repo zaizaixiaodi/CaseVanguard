@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(New-Item -ItemType Directory -Force -Path \".claude\\\\skills\", \".claude\\\\scripts\", \".claude\\\\commands\", \"templates\\\\meta\", \"workspace\\\\raw\", \"workspace\\\\processed\", \"workspace\\\\briefs\", \"workspace\\\\versions\", \"workspace\\\\meta\")",
+      "Bash(Select-Object FullName)",
+      "Bash(python .claude/scripts/state-manager.py init)",
+      "Bash(python .claude/scripts/state-manager.py read case-state.json)",
+      "Bash(python .claude/scripts/state-manager.py phase phase_1_preprocess)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}

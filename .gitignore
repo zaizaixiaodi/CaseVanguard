@@ -1,0 +1,15 @@
+# 案件数据（隐私，不提交）
+workspace/raw/
+workspace/processed/
+workspace/briefs/
+workspace/meta/
+workspace/versions/
+workspace/*.md
+workspace_archive/
+
+# 敏感配置
+.env
+
+# 系统文件
+.DS_Store
+Thumbs.db

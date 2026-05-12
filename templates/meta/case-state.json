@@ -1,0 +1,20 @@
+{
+  "case_id": "",
+  "case_name": "",
+  "session_id": "",
+  "created_at": "",
+  "updated_at": "",
+  "phase": "phase_0_init",
+  "phase_history": [],
+  "evidence_count": 0,
+  "evidence_read": 0,
+  "evidence_approved": 0,
+  "evidence_pending_review": 0,
+  "evidence_unread": 0,
+  "first_pass_completed": false,
+  "cross_verify_completed": false,
+  "report_generated": false,
+  "report_finalized": false,
+  "supplementary_rounds": 0,
+  "report_version": null
+}
