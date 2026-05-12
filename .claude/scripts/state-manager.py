@@ -26,7 +26,7 @@ def read_state(filename):
     path = _resolve_path(filename)
     if not os.path.exists(path):
         return None
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, "r", encoding="utf-8-sig") as f:
         return json.load(f)
 
 
@@ -124,6 +124,26 @@ def init_from_template(template_name, target_filename, overrides=None):
         data.update(overrides)
 
     return write_state(target_filename, data)
+
+
+def update_group_status(group_id, status, paused_at=None, pause_reason=None):
+    """更新 reading-plan.json 中指定组的 status 字段。"""
+    plan = read_state("reading-plan.json")
+    if plan is None:
+        return None
+    for group in plan.get("groups", []):
+        if group.get("group_id") == group_id:
+            group["status"] = status
+            if paused_at is not None:
+                group["paused_at"] = paused_at
+            else:
+                group.pop("paused_at", None)
+            if pause_reason is not None:
+                group["pause_reason"] = pause_reason
+            else:
+                group.pop("pause_reason", None)
+            break
+    return write_state("reading-plan.json", plan)
 
 
 if __name__ == "__main__":
