@@ -167,3 +167,33 @@
 - M5（审批流程 `/approve`、`/revise`）尚未开发，审批环节通过手动修改 JSON 状态文件模拟通过
 - 用户指出不应在更新状态文件时使用 Python（因 Windows 环境下 `python` 命令 exit 49），应直接用 Edit 工具修改 JSON 文件
 
+### v0.1.6 — M5审批流程 + 精要大合集 + Walkthrough验收通过 (2026-05-13)
+
+**变更内容：**
+- 新增 `.claude/commands/approve.md` — `/approve` 命令（批量审批、入库精要大合集、压缩比自检、支持排除和指定证据）
+- 新增 `.claude/commands/revise.md` — `/revise` 命令（律师修改意见→重读原文→重新生成精要→批注标记→待复审）
+- 新增 `templates/evidence-collection.md` — 精要大合集模板（5组分区 + 压缩比自检报告）
+- 生成 `workspace/evidence-collection.md` — 19份精要压缩合集（17.3KB，压缩比 1/9.5，接近理想值 1/10）
+- 更新 `workspace/meta/file-manifest.json` — 19份证据 reading_status → approved
+- 更新 `workspace/meta/case-state.json` — evidence_approved = 19
+- 更新 `workspace/meta/review-log.json` — 追加审批和修改记录
+- 测试 `/revise E004` — 补充面积差异分析，含批注标记（依律师意见补充）
+
+**M5 Walkthrough 验收：**
+
+| 验收项 | 结果 |
+|--------|------|
+| /approve 命令文件 | ✅ |
+| /revise 命令文件 | ✅ |
+| 精要大合集模板 | ✅ |
+| 精要大合集已生成 | ✅ |
+| 压缩比达标（≤1/4） | ✅ 1/9.5 |
+| 压缩比自检报告 | ✅ 数值完整 |
+| 批量审批状态更新 | ✅ 19份 → approved |
+| /revise 测试 | ✅ E004 含批注标记 |
+| review-log 完整 | ✅ 含审批+修改记录 |
+
+**决策与反馈：**
+- 用户评价"质量非常高，已经接近想要的东西了"
+- M5 完成后，Phase 2（分组阅读+审批）的全部核心能力已就绪，可进入 Phase 3（全局交叉验证 /cross-verify）
+
