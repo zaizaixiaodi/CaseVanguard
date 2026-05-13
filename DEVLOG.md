@@ -172,8 +172,8 @@
 **变更内容：**
 - 新增 `.claude/commands/approve.md` — `/approve` 命令（批量审批、入库精要大合集、压缩比自检、支持排除和指定证据）
 - 新增 `.claude/commands/revise.md` — `/revise` 命令（律师修改意见→重读原文→重新生成精要→批注标记→待复审）
-- 新增 `templates/evidence-collection.md` — 精要大合集模板（5组分区 + 压缩比自检报告）
-- 生成 `workspace/evidence-collection.md` — 19份精要压缩合集（17.3KB，压缩比 1/9.5，接近理想值 1/10）
+- 新增 `templates/精要大合集-evidence-collection.md` — 精要大合集模板（5组分区 + 压缩比自检报告）
+- 生成 `workspace/精要大合集-evidence-collection.md` — 19份精要压缩合集（17.3KB，压缩比 1/9.5，接近理想值 1/10）
 - 更新 `workspace/meta/file-manifest.json` — 19份证据 reading_status → approved
 - 更新 `workspace/meta/case-state.json` — evidence_approved = 19
 - 更新 `workspace/meta/review-log.json` — 追加审批和修改记录
@@ -234,8 +234,8 @@
 - 新增 `.claude/skills/cross-verify/SKILL.md` — 四维验证技能（时间线矛盾检测、金额一致性校验、主体一致性校验、法律要件缺口检测），含验证报告输出格式模板和矛盾严重性分级
 - 新增 `.claude/commands/cross-verify.md` — `/cross-verify` 命令（7步流程：初始化→时间线→金额→主体→法律要件→报告→输出）
 - T7 Walkthrough：对真实案件19份证据执行完整四维验证
-- 生成 `workspace/timeline.md` — 24个事件的案件时间线（合同签约→施工→完工→催款全链路）
-- 生成 `workspace/cross-verify-report.md` — 完整验证报告（6章节：时间线/金额/主体/法律要件/风险提示/行动建议）
+- 生成 `workspace/案件时间线-timeline.md` — 24个事件的案件时间线（合同签约→施工→完工→催款全链路）
+- 生成 `workspace/交叉验证报告-cross-verify-report.md` — 完整验证报告（6章节：时间线/金额/主体/法律要件/风险提示/行动建议）
 - 更新 `workspace/meta/case-state.json` — phase→phase_3_cross_verify, cross_verify_completed=true
 - 更新 `workspace/meta/case-context.json` — legal_elements_checklist 11项全部从null→{status, supporting_evidence, gap_note}
 - 更新 `workspace/meta/review-log.json` — 追加cross_verify_completed记录
@@ -246,7 +246,7 @@
 |--------|------|
 | 四维验证全部执行 | ✅ 时间线3矛盾/金额6异常/主体4矛盾/要件5✅+5⚠️+1❌ |
 | timeline.md 生成 | ✅ 24事件按时间排序 |
-| cross-verify-report.md | ✅ 6章节完整报告 |
+| 交叉验证报告-cross-verify-report.md | ✅ 6章节完整报告 |
 | case-state 更新 | ✅ phase_3_cross_verify |
 | legal_elements_checklist | ✅ 11项全部填充 |
 | review-log | ✅ 追加记录 |
@@ -266,7 +266,7 @@
 
 **变更内容：**
 - 新建 `.claude/skills/generate-deliverable/SKILL.md`：案件复杂度判断规则（简单/中等/复杂）、字数分配、Executive Summary 撰写规范、各章节撰写标准、自检规则
-- 新建 `templates/case-probe-report.md`：案件初探精要完整模板，含元数据头、Executive Summary、五章正文、关键细节速查表
+- 新建 `templates/案件初探精要-case-probe-report.md`：案件初探精要完整模板，含元数据头、Executive Summary、五章正文、关键细节速查表
 - 新建 `.claude/commands/generate-report.md`：6步流程（复杂度判断→读取输入→生成报告→自检→版本管理→输出）+ 定稿流程
 - T8 Walkthrough 执行完成：生成案件初探精要 v1.0，复杂度"复杂"，正文2563字，15条速查表
 - 律师确认定稿，归档至 workspace/versions/case-probe-report_v1.0_final.md
@@ -274,7 +274,7 @@
 **T8 验收结果：**
 | 检查项 | 结果 |
 |--------|------|
-| 报告生成 | ✅ workspace/case-probe-report.md |
+| 报告生成 | ✅ workspace/案件初探精要-case-probe-report.md |
 | 复杂度判断 | ✅ 复杂（19证据/>10主体/多争点） |
 | Executive Summary | ✅ ~190字，纯事实 |
 | 正文字数 | ✅ 2563字（目标2000-3000） |
@@ -326,7 +326,7 @@
 
 **变更内容：**
 - 新建 `.claude/commands/status.md` — `/status` 命令：读取 case-state.json 展示案件状态面板（阶段、证据进度、验证报告状态）+ 智能下一步建议（按当前状态自动推荐操作）
-- 新建 `.claude/commands/timeline.md` — `/timeline` 命令：查看 workspace/timeline.md 案件大事记，支持律师编辑补充
+- 新建 `.claude/commands/timeline.md` — `/timeline` 命令：查看 workspace/案件时间线-timeline.md 案件大事记，支持律师编辑补充
 - 新建 `.claude/commands/manifest.md` — `/manifest` 命令：表格展示证据文件清单及状态，支持按状态筛选（未读/待审/已审批）
 - 新建 `.claude/commands/context.md` — `/context` 命令：显示案件上下文（案由/当事人/背景/假设/策略/关注点/法律要件覆盖），支持律师补充信息追加到 updates 数组
 - 新建 `.claude/commands/clean-workspace.md` — `/clean-workspace` 命令：归档当前案件到 workspace_archive/{case_id}/，重建空 workspace 目录结构。含双重安全检查：report_finalized 未定稿时警告 + 律师二次确认
@@ -348,4 +348,22 @@
 - /clean-workspace 不在 T10 中实际执行（会删除案件数据），仅验证逻辑正确性
 - 5个辅助命令均不修改核心状态（只读为主），/context 和 /timeline 仅追加/编辑非状态文件
 - M10 完成，项目 v1.0.0 完整可用：M1-M10 共 16 个斜杠命令，覆盖证据审查全流程
+
+### v1.0.1 — 输出文档文件名中文化 (2026-05-13)
+
+**变更内容：**
+- 输出文档统一采用"中文-英文"双名格式（如 `案件初探精要-case-probe-report.md`）
+- workspace/ 和 templates/ 下 6 个文件重命名：
+  - `evidence-collection.md` → `精要大合集-evidence-collection.md`
+  - `case-probe-report.md` → `案件初探精要-case-probe-report.md`
+  - `cross-verify-report.md` → `交叉验证报告-cross-verify-report.md`
+  - `timeline.md` → `案件时间线-timeline.md`
+  - `incremental-verify-report.md` → `增量验证报告-incremental-verify-report.md`
+  - versions/ `case-probe-report_v1.0_final.md` → `案件初探精要-case-probe-report_v1.0_final.md`
+- 56 处引用更新（16 个命令文件、2 个技能文件、DEVLOG、claude.md、开发计划、PRD 等）
+
+**决策与反馈：**
+- 律师希望输出文档能一眼看出用途，英文文件名需配合中文名
+- 命令文件（.claude/commands/）保持英文命名不变，仅输出文档采用中英双名
+- 此规则适用于未来所有生成的 workspace 文档
 

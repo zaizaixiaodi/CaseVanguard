@@ -9,8 +9,8 @@
      - 如果 `report_outdated` 也为 `true` → 提示"报告已定稿但内容已过期（精要大合集有更新）。将生成新版本。" → 继续。
      - 如果 `report_outdated` 为 `false` → 提示"报告已定稿（v{version}）。如需修改，请直接编辑文件后告知。" → 停止。
 2. 确认以下文件存在：
-   - `workspace/evidence-collection.md`
-   - `workspace/cross-verify-report.md`
+   - `workspace/精要大合集-evidence-collection.md`
+   - `workspace/交叉验证报告-cross-verify-report.md`
    - `workspace/meta/case-context.json`
 
 ## 步骤一：判断案件复杂度
@@ -24,9 +24,9 @@
 
 ## 步骤二：读取输入
 
-1. 读取 `workspace/evidence-collection.md` 全文（精要大合集）。
-2. 读取 `workspace/cross-verify-report.md` 全文（验证报告）。
-3. 读取 `workspace/timeline.md`（时间线）。
+1. 读取 `workspace/精要大合集-evidence-collection.md` 全文（精要大合集）。
+2. 读取 `workspace/交叉验证报告-cross-verify-report.md` 全文（验证报告）。
+3. 读取 `workspace/案件时间线-timeline.md`（时间线）。
 4. 读取 `workspace/meta/case-context.json`（案件背景、法律要件、律师关注点）。
 5. 读取 `workspace/meta/case-state.json`（session_id 等元数据）。
 
@@ -56,13 +56,13 @@
 
 ## 步骤五：版本管理与保存
 
-1. 如果 `workspace/case-probe-report.md` 已存在：
+1. 如果 `workspace/案件初探精要-case-probe-report.md` 已存在：
    - 读取当前版本号
    - 将当前文件复制到 `workspace/versions/case-probe-report_v{old_version}.md`
    - 新版本号 = 旧版本号 + 0.1
 2. 如果不存在（首次生成）：
    - 版本号 = "1.0"
-3. 将报告写入 `workspace/case-probe-report.md`（头部标注版本号）。
+3. 将报告写入 `workspace/案件初探精要-case-probe-report.md`（头部标注版本号）。
 4. 更新 `case-state.json`：
    - `report_generated` → `true`
    - `report_version` → "{version}"
@@ -82,7 +82,7 @@
 **正文字数：** {n} 字（目标 {range}）
 **速查表条目：** {n} 条
 
-报告已保存至 workspace/case-probe-report.md
+报告已保存至 workspace/案件初探精要-case-probe-report.md
 
 请审阅报告。您可以：
 1. 直接编辑文件（修改后告知我更新版本）

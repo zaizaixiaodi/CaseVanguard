@@ -29,13 +29,13 @@
 对 `to_approve` 中的每份证据：
 
 1. 读取 `workspace/briefs/E{NNN}_brief.md`。
-2. 检查该证据是否已存在于 `workspace/evidence-collection.md` 中：
+2. 检查该证据是否已存在于 `workspace/精要大合集-evidence-collection.md` 中：
    - 搜索 `### E{NNN} —` 标题。
    - **如果存在**（re-read 场景）：替换该精要块。
      - 定位从 `### E{NNN} —` 到下一个 `### E` 或 `## 第` 或 `## 压缩比` 或文件尾之间的所有内容。
      - 用新精要内容替换该块。
    - **如果不存在**（首次审批或 add-evidence 场景）：追加到对应组。
-     - 如果文件不存在，先按 `templates/evidence-collection.md` 模板创建。
+     - 如果文件不存在，先按 `templates/精要大合集-evidence-collection.md` 模板创建。
      - 追加时按分组排列，每组前加 `## 第{n}组：{组标签}` 标题。
 3. 更新 `file-manifest.json`：
    - `reading_status` → `"approved"`
@@ -71,7 +71,7 @@
 全部入库完成后，执行压缩比自检：
 
 1. 计算 `workspace/processed/` 下所有 MD 文件的总大小（字节）。
-2. 计算 `workspace/evidence-collection.md` 的大小（字节）。
+2. 计算 `workspace/精要大合集-evidence-collection.md` 的大小（字节）。
 3. 计算压缩比 = 精要大合集大小 / 原始MD总大小。
 4. 输出自检报告：
    ```

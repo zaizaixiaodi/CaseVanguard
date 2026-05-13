@@ -145,7 +145,7 @@ allowed-tools: Read Glob Grep Write Edit Bash(python *)
 
 ## 4. 比对范围
 
-- **主输入：** `workspace/evidence-collection.md`（精要大合集）
+- **主输入：** `workspace/精要大合集-evidence-collection.md`（精要大合集）
 - **辅助输入：** `workspace/meta/case-context.json`（法律要件 + 律师关注点）
 - **比对范围：** 全部已审批精要（不限组别）
 - **不重新阅读原文**（v1保守策略），仅基于精要大合集进行校验

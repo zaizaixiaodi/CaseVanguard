@@ -8,14 +8,14 @@
    - `cross_verify_completed` 为 `true` → 提示"已完成全局交叉验证。如需重新验证，请先确认。"。
 2. 读取 `workspace/meta/file-manifest.json`，确认 `evidence_approved > 0`。
    - 如果为 0 → 提示"尚无已审批的证据精要，请先使用 /approve 审批精要。"。
-3. 确认 `workspace/evidence-collection.md` 存在。
+3. 确认 `workspace/精要大合集-evidence-collection.md` 存在。
    - 不存在 → 提示"精要大合集尚未生成，请先使用 /approve 生成。"。
 
 ## 步骤一：初始化
 
 1. 更新 `case-state.json`：`phase` → `"phase_3_cross_verify"`。
 2. 读取 `workspace/meta/case-context.json`（重点关注 `legal_elements_checklist` 和 `focus_points`）。
-3. 读取 `workspace/evidence-collection.md` 全文。
+3. 读取 `workspace/精要大合集-evidence-collection.md` 全文。
 
 ## 步骤二：时间线验证
 
@@ -24,7 +24,7 @@
 1. 从精要大合集中提取全部日期-事件对（如签约、开工、完工、交付、付款、催告、发函等）。
 2. 按时间排序，构建案件时间线。
 3. 检测矛盾：同一事件不同日期、逻辑倒置、关键节点缺失、日期模糊。
-4. **生成副产品 `workspace/timeline.md`**：按时间排序的事件表，标注证据来源。
+4. **生成副产品 `workspace/案件时间线-timeline.md`**：按时间排序的事件表，标注证据来源。
 
 ## 步骤三：金额校验
 
@@ -65,7 +65,7 @@
    - 🔴 **严重风险：** 时间线重大矛盾、金额核心不一致、主体身份链断裂、要件缺失
    - 🟡 **注意事项：** 次要矛盾、部分缺口、需确认事项
 3. 基于风险提示和缺口分析，生成下一步行动建议。
-4. 将验证报告保存到 `workspace/cross-verify-report.md`。
+4. 将验证报告保存到 `workspace/交叉验证报告-cross-verify-report.md`。
 5. 更新 `case-state.json`：`cross_verify_completed` → `true`。
 6. 追加 `review-log.json`：
    - `action: "cross_verify_completed"`
@@ -95,8 +95,8 @@
 ## 📌 下一步行动建议
 {行动建议列表}
 
-完整报告已保存至 workspace/cross-verify-report.md
-时间线已保存至 workspace/timeline.md
+完整报告已保存至 workspace/交叉验证报告-cross-verify-report.md
+时间线已保存至 workspace/案件时间线-timeline.md
 
 下一步：/generate-report 生成《案件初探精要》
 ```

@@ -70,19 +70,19 @@ allowed-tools: Read Glob Grep Write Edit Bash(python *)
 - 以表格形式呈现关键事件
 - 每行：日期 | 事件 | 证据来源
 - 仅收录对案件有实质影响的事件
-- 来源：`workspace/timeline.md`
+- 来源：`workspace/案件时间线-timeline.md`
 
 ### 三、初步证据目录（~500字）
 - 按 reading-plan 的分组展示
 - 每组：组名 + 证据列表 + 关键发现（1-2句）+ 警告（如有）
 - 不展开每份证据的详细内容（详细内容在精要大合集）
-- 来源：`workspace/evidence-collection.md`
+- 来源：`workspace/精要大合集-evidence-collection.md`
 
 ### 四、风险提示与证据链断裂点（~400字）
 - 4.1 证据缺口：哪些要件缺少证据支撑
 - 4.2 不利事实：对原告不利的证据内容
 - 4.3 陈述与证据的冲突：当事人陈述与证据记载不一致之处
-- 来源：`workspace/cross-verify-report.md`
+- 来源：`workspace/交叉验证报告-cross-verify-report.md`
 
 ### 五、下一步行动计划（~400字）
 - 5.1 当事人配合事项：需要当事人补充的证据、确认的事实

@@ -133,7 +133,7 @@ python .claude/scripts/mineru_converter.py workspace/raw/ --output-dir workspace
 
 ### 5.3 即时交叉验证
 
-读取 `workspace/evidence-collection.md` 全部已有精要，执行即时交叉验证（复用 read-next 步骤四逻辑）：
+读取 `workspace/精要大合集-evidence-collection.md` 全部已有精要，执行即时交叉验证（复用 read-next 步骤四逻辑）：
 - 提取事实卡片（日期、金额、主体）。
 - 与全部已有 approved 精要进行三维比对。
 - 严重性分级：🔴 严重 / 🟡 注意 / ⚪ 一致。
@@ -155,7 +155,7 @@ python .claude/scripts/mineru_converter.py workspace/raw/ --output-dir workspace
 
 律师使用 `/approve` 审批新精要后：
 
-1. 在 `workspace/evidence-collection.md` 对应组中**追加**新精要：
+1. 在 `workspace/精要大合集-evidence-collection.md` 对应组中**追加**新精要：
    - 定位目标组的 `## 第{n}组：{标签}` 部分。
    - 在该组已有精要之后、下一个 `## 第` 标题之前插入新精要。
    - 如果是新组，在最后一个已有组之后添加新组标题和精要。
@@ -173,13 +173,13 @@ python .claude/scripts/mineru_converter.py workspace/raw/ --output-dir workspace
 
 所有新证据审批完成后，自动执行增量交叉验证：
 
-1. 读取更新后的 `workspace/evidence-collection.md`（包含新精要）。
+1. 读取更新后的 `workspace/精要大合集-evidence-collection.md`（包含新精要）。
 2. 对每份新证据精要 vs 全部已有精要，执行四维增量验证：
    - **时间线**：新日期是否与已有日期产生新矛盾？是否填补了时间线空白？
    - **金额**：新金额与已有金额是否一致？是否有新的算术关系需要验证？
    - **主体**：新主体/角色是否与已有信息一致？是否揭示了新的关系？
    - **法律要件**：新证据是否改变了对 `case-context.json` 中 `legal_elements_checklist` 某项要件的覆盖？
-3. 生成增量验证报告，保存到 `workspace/incremental-verify-report.md`：
+3. 生成增量验证报告，保存到 `workspace/增量验证报告-incremental-verify-report.md`：
 
 ```markdown
 # 增量交叉验证报告
@@ -215,7 +215,7 @@ python .claude/scripts/mineru_converter.py workspace/raw/ --output-dir workspace
 - {其他建议}
 ```
 
-4. 更新 `workspace/timeline.md`：从新精要中提取新事件，插入到时间顺序正确位置。
+4. 更新 `workspace/案件时间线-timeline.md`：从新精要中提取新事件，插入到时间顺序正确位置。
 5. 更新 `workspace/meta/case-context.json`：如果 `legal_elements_checklist` 项目发生变化，更新对应条目。
 6. 更新 `case-state.json`：
    - `supplementary_rounds` += 1
@@ -235,8 +235,8 @@ python .claude/scripts/mineru_converter.py workspace/raw/ --output-dir workspace
 审批通过：{N} 份
 增量交叉验证：{发现数量} 项新发现
 
-**增量验证报告：** workspace/incremental-verify-report.md
-**时间线已更新：** workspace/timeline.md
+**增量验证报告：** workspace/增量验证报告-incremental-verify-report.md
+**时间线已更新：** workspace/案件时间线-timeline.md
 
 supplementary_rounds: {新值}
 报告状态: 已过期（建议执行 /generate-report 重新生成）
