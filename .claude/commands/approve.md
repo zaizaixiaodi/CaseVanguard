@@ -2,9 +2,9 @@
 
 ## 前置检查
 
-1. 读取 `workspace/meta/case-state.json`，确认 `phase`。
-   - 如果为 `phase_2_reading` → 继续。
-   - 其他阶段 → 提示"当前不在阅读阶段，无法执行审批。"。
+1. 读取 `workspace/meta/case-state.json`，确认 `first_pass_completed` 为 `true`。
+   - 如果为 `true` → 继续。
+   - 如果为 `false` → 提示"首次阅读尚未完成，无法执行审批。"。
 2. 读取 `workspace/meta/file-manifest.json`，确认有 `reading_status = "pending_review"` 的证据。
    - 如果没有 → 提示"当前没有待审批的精要。"。
 
@@ -29,14 +29,26 @@
 对 `to_approve` 中的每份证据：
 
 1. 读取 `workspace/briefs/E{NNN}_brief.md`。
-2. 将精要内容追加到 `workspace/evidence-collection.md`（如果文件不存在，先按 `templates/evidence-collection.md` 模板创建）。
-3. 追加时按分组排列，每组前加 `## 第{n}组：{组标签}` 标题。
-4. 更新 `file-manifest.json`：
+2. 检查该证据是否已存在于 `workspace/evidence-collection.md` 中：
+   - 搜索 `### E{NNN} —` 标题。
+   - **如果存在**（re-read 场景）：替换该精要块。
+     - 定位从 `### E{NNN} —` 到下一个 `### E` 或 `## 第` 或 `## 压缩比` 或文件尾之间的所有内容。
+     - 用新精要内容替换该块。
+   - **如果不存在**（首次审批或 add-evidence 场景）：追加到对应组。
+     - 如果文件不存在，先按 `templates/evidence-collection.md` 模板创建。
+     - 追加时按分组排列，每组前加 `## 第{n}组：{组标签}` 标题。
+3. 更新 `file-manifest.json`：
    - `reading_status` → `"approved"`
-5. 追加 `review-log.json`：
-   - `action: "approved"`
+4. 追加 `review-log.json`：
+   - `action: "approved"`（首次审批）或 `action: "re_read_approved"`（重新阅读后审批）
    - `evidence_id: "{E编号}"`
-   - `content: "精要已审批通过并入库"`
+   - `content: "精要已审批通过并入库"` 或 `"重新阅读审批通过，精要大合集已更新"`（re-read 场景）
+
+**re-read 审批后的额外状态更新：**
+- 更新 `case-state.json`：
+  - `supplementary_rounds` += 1
+  - `report_outdated` = true
+- 向律师提示报告已过期，建议执行 `/generate-report` 重新生成。
 
 ## 步骤三：更新计数器
 

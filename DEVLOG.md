@@ -286,3 +286,39 @@
 - 律师直接确认定稿，无修改意见
 - 版本管理策略：v1.0起步，每次修改递增0.1，定稿时归档带_final后缀
 
+### v0.9.0 — M9回溯与增量命令 + /re-read + /add-evidence + 增量交叉验证 (2026-05-13)
+
+**变更内容：**
+- 新建 `.claude/commands/re-read.md` — `/re-read` 命令（6步流程：定位→记录→按新重点重新阅读→增量交叉验证→保存→输出），支持律师指定重点关注方向重新生成精要
+- 新建 `.claude/commands/add-evidence.md` — `/add-evidence` 命令（8步流程：扫描→转换→分组→写入状态→阅读→审批→增量验证→输出），支持案件完成后追加新证据
+- 增强 `.claude/commands/approve.md` — 两处修改：
+  - 前置检查从"必须phase_2_reading"放宽为"必须first_pass_completed=true"，支持增量审批
+  - 入库逻辑新增精要替换（re-read场景：检测已有精要→替换而非追加）
+- 增强 `.claude/commands/generate-report.md` — 两处修改：
+  - 前置检查支持report_outdated=true时继续生成新版本
+  - 步骤五新增report_outdated清除和report_finalized重置
+- 更新 `templates/meta/case-state.json` — 新增 `report_outdated` 字段
+- 更新 `workspace/meta/case-state.json` — 新增 `report_outdated` 字段
+- T9.1 Walkthrough：对E003执行完整 `/re-read`（重点关注"电缆变更对工期的影响"），验证全部状态更新
+
+**T9 验收结果：**
+
+| 检查项 | 结果 |
+|--------|------|
+| /re-read 命令文件 | ✅ 6步完整流程 |
+| /add-evidence 命令文件 | ✅ 8步完整流程（含增量交叉验证） |
+| approve 替换逻辑 | ✅ E003精要在合集中替换（非追加） |
+| approve 前置放宽 | ✅ first_pass_completed=true即可 |
+| generate-report outdated处理 | ✅ 检测+清除 |
+| report_outdated 字段 | ✅ 模板+实时都已添加 |
+| T9.1 re-read E003 | ✅ 新精要含因果分析链 |
+| supplementary_rounds | ✅ 0→1 |
+| report_outdated | ✅ false→true |
+| review-log | ✅ re_read_requested/completed/approved |
+| phase 不变 | ✅ 保持 phase_3_cross_verify |
+
+**决策与反馈：**
+- 增量交叉验证嵌入在 /add-evidence 和 /re-read 中，不创建独立命令，减少命令复杂度
+- approve 的精要替换策略：通过搜索 `### E{NNN} —` 标题定位块边界，替换到下一个 `### E` 或 `##` 分隔符
+- v1保守策略延续：不自动重新生成报告，仅标记report_outdated=true并建议律师手动执行 /generate-report
+

@@ -16,5 +16,6 @@
   "report_generated": false,
   "report_finalized": false,
   "supplementary_rounds": 0,
+  "report_outdated": false,
   "report_version": null
 }

@@ -5,7 +5,9 @@
 1. 读取 `workspace/meta/case-state.json`，确认状态：
    - `cross_verify_completed` 须为 `true` → 继续。
    - 如果为 `false` → 提示"尚未完成全局交叉验证，请先执行 /cross-verify"。
-   - `report_finalized` 为 `true` → 提示"报告已定稿（v{version}）。如需修改，请直接编辑文件后告知。"。
+   - `report_finalized` 为 `true`：
+     - 如果 `report_outdated` 也为 `true` → 提示"报告已定稿但内容已过期（精要大合集有更新）。将生成新版本。" → 继续。
+     - 如果 `report_outdated` 为 `false` → 提示"报告已定稿（v{version}）。如需修改，请直接编辑文件后告知。" → 停止。
 2. 确认以下文件存在：
    - `workspace/evidence-collection.md`
    - `workspace/cross-verify-report.md`
@@ -64,6 +66,8 @@
 4. 更新 `case-state.json`：
    - `report_generated` → `true`
    - `report_version` → "{version}"
+   - `report_outdated` → `false`（清除过期标记）
+   - `report_finalized` → `false`（新版本需重新定稿）
 5. 追加 `review-log.json`：
    - `action: "report_generated"`
    - `content: "生成案件初探精要 v{version}，复杂度{级别}，正文{n}字"`
