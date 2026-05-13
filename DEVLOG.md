@@ -228,3 +228,37 @@
 - 比对范围从同组扩展到跨组：避免遗漏组间矛盾（如合同组 vs 验收组的面积/日期差异）
 - 恢复机制设计为"律师确认后清除暂停"，而非自动恢复，保持律师控制权
 
+### v0.1.8 — M7全局交叉验证 + 四维验证报告 + 时间线生成 (2026-05-13)
+
+**变更内容：**
+- 新增 `.claude/skills/cross-verify/SKILL.md` — 四维验证技能（时间线矛盾检测、金额一致性校验、主体一致性校验、法律要件缺口检测），含验证报告输出格式模板和矛盾严重性分级
+- 新增 `.claude/commands/cross-verify.md` — `/cross-verify` 命令（7步流程：初始化→时间线→金额→主体→法律要件→报告→输出）
+- T7 Walkthrough：对真实案件19份证据执行完整四维验证
+- 生成 `workspace/timeline.md` — 24个事件的案件时间线（合同签约→施工→完工→催款全链路）
+- 生成 `workspace/cross-verify-report.md` — 完整验证报告（6章节：时间线/金额/主体/法律要件/风险提示/行动建议）
+- 更新 `workspace/meta/case-state.json` — phase→phase_3_cross_verify, cross_verify_completed=true
+- 更新 `workspace/meta/case-context.json` — legal_elements_checklist 11项全部从null→{status, supporting_evidence, gap_note}
+- 更新 `workspace/meta/review-log.json` — 追加cross_verify_completed记录
+
+**T7 验收结果：**
+
+| 验收项 | 结果 |
+|--------|------|
+| 四维验证全部执行 | ✅ 时间线3矛盾/金额6异常/主体4矛盾/要件5✅+5⚠️+1❌ |
+| timeline.md 生成 | ✅ 24事件按时间排序 |
+| cross-verify-report.md | ✅ 6章节完整报告 |
+| case-state 更新 | ✅ phase_3_cross_verify |
+| legal_elements_checklist | ✅ 11项全部填充 |
+| review-log | ✅ 追加记录 |
+
+**四维验证关键发现：**
+- 🔴 严重风险：中信银行5,000万融资挪用（E008/E010）、人格混同证据链（E016/E017/E018/E019）、付款协议多主体未盖章（E007）、无工程结算文件
+- ✅ 充分支撑：主体适格、合同效力、工期、工程价款、加速到期
+- ❌ 唯一缺口：工程结算（无正式结算文件）
+- 📌 5条优先补充证据 + 4条诉讼策略建议
+
+**决策与反馈：**
+- v1保守策略：不自动修改已审批精要，仅在验证报告中标注矛盾和缺口，律师根据报告手动 /revise
+- timeline.md 作为 /cross-verify 的副产品生成，不单独创建 /timeline 命令（属于 M10）
+- 法律要件分析直接更新 case-context.json，使后续 /generate-report 可直接读取覆盖状态
+
