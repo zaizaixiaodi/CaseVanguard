@@ -262,3 +262,27 @@
 - timeline.md 作为 /cross-verify 的副产品生成，不单独创建 /timeline 命令（属于 M10）
 - 法律要件分析直接更新 case-context.json，使后续 /generate-report 可直接读取覆盖状态
 
+### v0.1.9 — M8报告生成 + 案件初探精要v1.0定稿 (2026-05-13)
+
+**变更内容：**
+- 新建 `.claude/skills/generate-deliverable/SKILL.md`：案件复杂度判断规则（简单/中等/复杂）、字数分配、Executive Summary 撰写规范、各章节撰写标准、自检规则
+- 新建 `templates/case-probe-report.md`：案件初探精要完整模板，含元数据头、Executive Summary、五章正文、关键细节速查表
+- 新建 `.claude/commands/generate-report.md`：6步流程（复杂度判断→读取输入→生成报告→自检→版本管理→输出）+ 定稿流程
+- T8 Walkthrough 执行完成：生成案件初探精要 v1.0，复杂度"复杂"，正文2563字，15条速查表
+- 律师确认定稿，归档至 workspace/versions/case-probe-report_v1.0_final.md
+
+**T8 验收结果：**
+| 检查项 | 结果 |
+|--------|------|
+| 报告生成 | ✅ workspace/case-probe-report.md |
+| 复杂度判断 | ✅ 复杂（19证据/>10主体/多争点） |
+| Executive Summary | ✅ ~190字，纯事实 |
+| 正文字数 | ✅ 2563字（目标2000-3000） |
+| 速查表锚点 | ✅ 15条，每条含原文锚点 |
+| 无法律判断 | ✅ 自检通过 |
+| 定稿归档 | ✅ v1.0 final |
+
+**决策与反馈：**
+- 律师直接确认定稿，无修改意见
+- 版本管理策略：v1.0起步，每次修改递增0.1，定稿时归档带_final后缀
+
