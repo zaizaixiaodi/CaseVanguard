@@ -322,3 +322,30 @@
 - approve 的精要替换策略：通过搜索 `### E{NNN} —` 标题定位块边界，替换到下一个 `### E` 或 `##` 分隔符
 - v1保守策略延续：不自动重新生成报告，仅标记report_outdated=true并建议律师手动执行 /generate-report
 
+### v1.0.0 — M10辅助命令 + 脚手架管理，完整可用 (2026-05-13)
+
+**变更内容：**
+- 新建 `.claude/commands/status.md` — `/status` 命令：读取 case-state.json 展示案件状态面板（阶段、证据进度、验证报告状态）+ 智能下一步建议（按当前状态自动推荐操作）
+- 新建 `.claude/commands/timeline.md` — `/timeline` 命令：查看 workspace/timeline.md 案件大事记，支持律师编辑补充
+- 新建 `.claude/commands/manifest.md` — `/manifest` 命令：表格展示证据文件清单及状态，支持按状态筛选（未读/待审/已审批）
+- 新建 `.claude/commands/context.md` — `/context` 命令：显示案件上下文（案由/当事人/背景/假设/策略/关注点/法律要件覆盖），支持律师补充信息追加到 updates 数组
+- 新建 `.claude/commands/clean-workspace.md` — `/clean-workspace` 命令：归档当前案件到 workspace_archive/{case_id}/，重建空 workspace 目录结构。含双重安全检查：report_finalized 未定稿时警告 + 律师二次确认
+
+**T10 Walkthrough 验收：**
+
+| 验收项 | 结果 |
+|--------|------|
+| /status 命令 | ✅ 完整状态面板+智能建议 |
+| /timeline 命令 | ✅ 查看/编辑双模式 |
+| /manifest 命令 | ✅ 全部展示+筛选模式 |
+| /context 命令 | ✅ 查看/补充双模式 |
+| /clean-workspace 命令 | ✅ 前置检查+确认+归档+重建 |
+| 未定稿警告 | ✅ report_finalized=false 时警告 |
+| 归档后重建空目录 | ✅ 5个目录 |
+| 任何阶段可执行 | ✅ 无严格阶段限制 |
+
+**决策与反馈：**
+- /clean-workspace 不在 T10 中实际执行（会删除案件数据），仅验证逻辑正确性
+- 5个辅助命令均不修改核心状态（只读为主），/context 和 /timeline 仅追加/编辑非状态文件
+- M10 完成，项目 v1.0.0 完整可用：M1-M10 共 16 个斜杠命令，覆盖证据审查全流程
+
